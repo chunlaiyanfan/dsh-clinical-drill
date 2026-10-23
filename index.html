@@ -703,11 +703,18 @@ html, body {
 
   /* ------------------------------------------------------------------ case */
 
+  function caseList() {
+    var all = D.CASES;
+    if (ui.caseDept && ui.caseDept !== '全部') {
+      var f = all.filter(function (c) { return c.dept === ui.caseDept; });
+      if (f.length) return f;
+    }
+    return all;
+  }
+
   function caseHTML() {
     var all = D.CASES;
-    var list = all;
-    if (ui.caseDept && ui.caseDept !== '全部') list = all.filter(function (c) { return c.dept === ui.caseDept; });
-    if (!list.length) list = all;
+    var list = caseList();
     var depts = ['全部'];
     all.forEach(function (c) { if (depts.indexOf(c.dept) < 0) depts.push(c.dept); });
     var deptBar = '<div class="bar" style="margin:0 0 10px;flex-wrap:wrap">' + depts.map(function (d) {
@@ -812,12 +819,13 @@ html, body {
     if (act === 'sent:next') { ui.si += 1; return render(); }
 
     if (act === 'case:reveal') {
-      var c = D.CASES[wrap(P.caseIdx, D.CASES.length)];
+      var cl = caseList();
+      var c = cl[wrap(P.caseIdx, cl.length)];
       P.caseRevealed[c.id] = !P.caseRevealed[c.id];
       save(); return render();
     }
-    if (act === 'case:prev') { P.caseIdx = wrap(P.caseIdx - 1, D.CASES.length); save(); return render(); }
-    if (act === 'case:next') { P.caseIdx = wrap(P.caseIdx + 1, D.CASES.length); save(); return render(); }
+    if (act === 'case:prev') { P.caseIdx = wrap(P.caseIdx - 1, caseList().length); save(); return render(); }
+    if (act === 'case:next') { P.caseIdx = wrap(P.caseIdx + 1, caseList().length); save(); return render(); }
 
     if (act === 'mse') { P.mse[v] = !P.mse[v]; save(); return render(); }
 
