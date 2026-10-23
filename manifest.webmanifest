@@ -1,0 +1,19 @@
+{
+  "name": "临床速练 · 考研冲刺",
+  "short_name": "临床速练",
+  "description": "临床医学考研刷题：题库、错题、进度存本地",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f7f8",
+  "theme_color": "#0f6e6a",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
