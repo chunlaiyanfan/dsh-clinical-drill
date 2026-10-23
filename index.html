@@ -261,6 +261,28 @@ html, body {
   .q { font-size: 17px; }
 }
 
+
+/* 教材依据：引用块 + 原文高亮 */
+.cite {
+  display: block;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--brand);
+  background: var(--surface-2);
+  border-radius: 0 10px 10px 0;
+  font-size: 0.94em;
+  line-height: 1.65;
+  color: var(--fg-2);
+}
+.cite .quote {
+  color: var(--fg);
+  font-weight: 700;
+  background: color-mix(in srgb, var(--brand) 14%, transparent);
+  padding: 1px 4px;
+  border-radius: 4px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
 </style>
 </head>
 <body>
@@ -514,6 +536,13 @@ html, body {
 
   /* ------------------------------------------------------------------ quiz */
 
+  function fmtWhy(text) {
+    var html = esc(text);
+    html = html.replace(/（教材依据：([\s\S]*?)）/g, '<span class="cite">（教材依据：$1）</span>');
+    html = html.replace(/「([^」]*)」/g, '<span class="quote">「$1」</span>');
+    return html;
+  }
+
   function quizHTML(items, idx, key, onlyReal) {
     var pool = onlyReal ? items.filter(function (q) { return !!q.src; }) : items;
     if (!pool.length) pool = items;
@@ -543,7 +572,7 @@ html, body {
         '<div class="ansline">答案：' + String.fromCharCode(65 + cur.a) + '</div>' +
         (plain ? '<div class="plain"><b>大白话</b><p>' + esc(plain) + '</p></div>' : '') +
         (ex
-          ? '<div class="sec"><h4>为什么选它</h4><p>' + esc(ex.why) + '</p></div>' +
+          ? '<div class="sec"><h4>为什么选它</h4><p>' + fmtWhy(ex.why) + '</p></div>' +
             (ex.others ? '<div class="sec"><h4>其他选项错在哪</h4><p>' + esc(ex.others) + '</p></div>' : '') +
             (ex.trap ? '<div class="sec"><h4>陷阱与记法</h4><p>' + esc(ex.trap) + '</p></div>' : '')
           : '<div class="sec"><p>' + esc(cur.e) + '</p></div>');
